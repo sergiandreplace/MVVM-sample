@@ -2,8 +2,16 @@ package com.blindbugs.wifipedia;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.blindbugs.wifipedia.data.factory.ScanWifisRepositoryFactoryImpl;
+import com.blindbugs.wifipedia.domain.interactor.InteractorCallback;
+import com.blindbugs.wifipedia.domain.interactor.ScanWifisUseCase;
+import com.blindbugs.wifipedia.domain.model.WifiNetwork;
+
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -12,6 +20,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ScanWifisUseCase useCase=new ScanWifisUseCase(new ScanWifisRepositoryFactoryImpl(this));
+        useCase.getVisibleWifis(new InteractorCallback<List<WifiNetwork>>() {
+            @Override
+            public void onCallback(List<WifiNetwork> value) {
+                for (WifiNetwork wifiNetwork : value) {
+                    Log.d("Wifi", wifiNetwork.ssid);
+                }
+            }
+        });
+
     }
 
     @Override
