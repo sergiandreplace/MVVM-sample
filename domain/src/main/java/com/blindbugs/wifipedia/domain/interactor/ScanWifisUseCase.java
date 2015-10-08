@@ -7,6 +7,8 @@ import com.blindbugs.wifipedia.domain.model.WifiNetwork;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by sergi on 10/5/15.
  */
@@ -14,8 +16,9 @@ public class ScanWifisUseCase {
 
     private final ScanWifiRepository repository;
 
-    public ScanWifisUseCase(ScanWifisRepositoryFactory factory) {
-        this.repository=factory.getScanWifisRepository();
+    @Inject
+    public ScanWifisUseCase(ScanWifiRepository scanWifiRepository) {
+        this.repository=scanWifiRepository;
     }
 
     public void getVisibleWifis(final InteractorCallback<List<WifiNetwork>> callback) {

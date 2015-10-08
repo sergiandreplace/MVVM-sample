@@ -6,7 +6,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.blindbugs.wifipedia.data.factory.ScanWifisRepositoryFactoryImpl;
+import com.blindbugs.wifipedia.component.DaggerWifiScanComponent;
+import com.blindbugs.wifipedia.component.WifiScanComponent;
+import com.blindbugs.wifipedia.data.module.WifiScanModule;
+import com.blindbugs.wifipedia.domain.data.repository.ScanWifiRepository;
 import com.blindbugs.wifipedia.domain.interactor.InteractorCallback;
 import com.blindbugs.wifipedia.domain.interactor.ScanWifisUseCase;
 import com.blindbugs.wifipedia.domain.model.WifiNetwork;
@@ -20,7 +23,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ScanWifisUseCase useCase=new ScanWifisUseCase(new ScanWifisRepositoryFactoryImpl(this));
+        WifiScanComponent component = DaggerWifiScanComponent.builder()
+                .wifiScanModule(new WifiScanModule())
+                .androidModule(new AndroidModule((WifipediaApplication) getApplication()))
+                .build();
+
+        ScanWifisUseCase useCase = component.provideScanWifiUseCase();
         useCase.getVisibleWifis(new InteractorCallback<List<WifiNetwork>>() {
             @Override
             public void onCallback(List<WifiNetwork> value) {

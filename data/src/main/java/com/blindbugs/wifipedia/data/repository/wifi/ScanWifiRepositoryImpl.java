@@ -9,6 +9,8 @@ import com.blindbugs.wifipedia.domain.model.WifiNetwork;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by sergi on 10/6/15.
  */
@@ -18,6 +20,7 @@ public class ScanWifiRepositoryImpl implements ScanWifiRepository, WifiScanner.W
             ;
     RepositoryCallback<List<WifiNetwork>> callback;
 
+    @Inject
     public ScanWifiRepositoryImpl(Context context) {
         this.context=context;
     }
